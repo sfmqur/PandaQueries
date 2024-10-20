@@ -1,43 +1,71 @@
-DROP TABLE IF EXISTS PUBLIC.CARDS_BAK;
+DROP TABLE IF EXISTS cards_bak;
 
-CREATE TABLE PUBLIC.CARDS_BAK AS
+CREATE TABLE cards_bak AS
 SELECT
-	*
+    *
 FROM
-	CARDS;
+    cards;
 
-DROP TABLE PUBLIC.CARDS;
+DROP TABLE cards;
 
 --new table format setup with adjusted layout
-CREATE TABLE IF NOT EXISTS PUBLIC.CARDS (
-	NAME TEXT COLLATE PG_CATALOG."default" NOT NULL,
-	SET TEXT COLLATE PG_CATALOG."default",
-	RARITY TEXT COLLATE PG_CATALOG."default" NOT NULL,
-	TYPE TEXT COLLATE PG_CATALOG."default" NOT NULL,
-	COST SMALLINT,
-	THRESHOLD TEXT[] COLLATE PG_CATALOG."default",
-	SUBTYPES TEXT[] COLLATE PG_CATALOG."default",
-	TEXT TEXT COLLATE PG_CATALOG."default" NOT NULL,
-	KEYWORDS TEXT[] COLLATE PG_CATALOG."default",
-	POWER SMALLINT,
-	DEFENSE SMALLINT,
-	FLAVORTEXT TEXT COLLATE PG_CATALOG."default",
-	PRICE MONEY,
-	FOILPRICE MONEY,
-	CONSTRAINT CARDS_PKEY PRIMARY KEY (NAME)
-) TABLESPACE PG_DEFAULT;
+CREATE TABLE IF NOT EXISTS public.cards (
+    name text COLLATE pg_catalog."default" NOT NULL,
+    SET text COLLATE pg_catalog."default",
+    rarity text COLLATE pg_catalog."default" NOT NULL,
+    type text COLLATE pg_catalog."default" NOT NULL,
+    cost smallint,
+    threshold TEXT[] COLLATE pg_catalog."default",
+    subtypes TEXT[] COLLATE pg_catalog."default",
+    text text COLLATE pg_catalog."default" NOT NULL,
+    keywords TEXT[] COLLATE pg_catalog."default",
+    power smallint,
+    defense smallint,
+    flavortext text COLLATE pg_catalog."default",
+    price money,
+    foilprice money,
+    CONSTRAINT cards_pkey PRIMARY KEY (name)
+) tablespace pg_default;
 
-ALTER TABLE IF EXISTS PUBLIC.CARDS OWNER TO SAM;
+ALTER TABLE IF EXISTS public.cards owner TO sam;
 
 -- i renamed some columns hence the quotes. this just maps the columns together,
 INSERT INTO
-	PUBLIC.CARDS (name, set, rarity, type, cost, threshold, subtypes, text, keywords, power, defense, flavortext, price, foilprice)
+    cards (
+        name,
+        set,
+        rarity,
+        type,
+        cost,
+        threshold,
+        subtypes,
+        text,
+        keywords,
+        power,
+        defense,
+        flavortext,
+        price,
+        foilprice
+    )
 SELECT
-	name, set, rarity, type, cost, threshold, subtypes, text, keywords, power, defense, "flavorText", price, "foilPrice"
+    name,
+    set,
+    rarity,
+    type,
+    cost,
+    threshold,
+    subtypes,
+    text,
+    keywords,
+    power,
+    defense,
+    "flavorText",
+    price,
+    "foilPrice"
 FROM
-	public.cards_bak;
+    cards_bak;
 
 SELECT
-	*
+    *
 FROM
-	PUBLIC.CARDS;
+    cards;
